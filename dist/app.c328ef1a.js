@@ -143,19 +143,18 @@ function makeFeeds(feeds) {
   }
 
   return feeds;
-}
+} // ajax.open('GET', NEWS_URL, false)
+// ajax.send()
 
-ajax.open('GET', NEWS_URL, false);
-ajax.send(); // console.log(ajax.response)
 
-var newsFeed = JSON.parse(ajax.response);
+var newsFeed = getData(NEWS_URL);
 var ul = document.createElement('ul');
 console.log(newsFeed);
 window.addEventListener('hashchange', function () {
-  var id = location.hash.substr(1);
-  ajax.open('GET', CONTENT_URL.replace('@id', id), false);
-  ajax.send();
-  var newsContent = JSON.parse(ajax.response);
+  var id = location.hash.substr(1); // ajax.open('GET', CONTENT_URL.replace('@id', id), false)
+  // ajax.send()
+
+  var newsContent = getData(CONTENT_URL.replace('@id', id));
   var title = document.createElement('h1');
   title.innerHTML = newsContent.title;
   content.appendChild(title);
@@ -163,23 +162,15 @@ window.addEventListener('hashchange', function () {
 });
 
 for (var i = 0; i < newsFeed.length; i++) {
-  var li = document.createElement('li');
-  var a = document.createElement('a');
-  a.href = "#".concat(newsFeed[i].id);
-  a.innerHTML = "".concat(newsFeed[i].title, " (").concat(newsFeed[i].comments_count, ")");
-  li.appendChild(a);
-  ul.appendChild(li);
-} // let data = '<ul>'
-// newsFeed.forEach((news) => {
-//     data += `<li>${news.title}</li>`
-// })
-// data += '</ul>'
-// root.innerHTML = data
+  var div = document.createElement('div');
+  div.innerHTML = "\n        <li>\n            <a href='#".concat(newsFeed[i].id, "'>\n            ").concat(newsFeed[i].title, " (").concat(newsFeed[i].comments_count, ")\n            </a>\n        </li>\n    "); // ul.appendChild(div.children[0])
 
+  ul.appendChild(div.firstElementChild);
+}
 
 container.appendChild(ul);
 container.appendChild(content);
-},{}],"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -207,7 +198,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63355" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58770" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -383,5 +374,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","app.js"], null)
+},{}]},{},["../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","app.js"], null)
 //# sourceMappingURL=/app.c328ef1a.js.map
