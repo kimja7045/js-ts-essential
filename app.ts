@@ -1,29 +1,64 @@
-const container = document.getElementById('root')
-const ajax = new XMLHttpRequest()
+type Store = {
+    currentPage: number
+    feeds: NewsFeed[]
+}
+type News = {
+    id: number
+    time_ago: string
+    title: string
+    url: string
+    user: string
+    content: string
+}
+type NewsFeed = News & {
+    comments_count: number
+    points: number
+    read?: boolean
+}
+
+type NewsDetail = News & {
+    comments: NewsComment[]
+}
+
+type NewsComment = News & {
+    comments: NewsComment[]
+    level: number
+}
+
+const container: HTMLElement | null = document.getElementById('root')
+const ajax: XMLHttpRequest = new XMLHttpRequest()
 const content = document.createElement('div')
 const NEWS_URL = 'https://api.hnpwa.com/v0/news/1.json'
 const CONTENT_URL = 'https://api.hnpwa.com/v0/item/@id.json'
-const store = {
+const store: Store = {
     currentPage: 1,
     feeds: [],
 }
 
-function getData(url) {
+function getData(url: string): NewsFeed[] | NewsDetail {
     ajax.open('GET', url, false)
     ajax.send()
 
     return JSON.parse(ajax.response)
 }
 
-function makeFeeds(feeds) {
+function makeFeeds(feeds: NewsFeed[]) {
     for (let i = 0; i < feeds.length; i++) {
         feeds[i].read = false
     }
 
     return feeds
 }
+
+function updateView(html) {
+    if (container != null) {
+        container.innerHTML = html
+    } else {
+        console.error('최상위 컨테이너가 없어 UI를 진행하지 못합니다.')
+    }
+}
 function newsFeed() {
-    let newsFeed = store.feeds
+    let newsFeed: NewsFeed[] = store.feeds
     const newsList = []
     let template = `
     <div class="bg-gray-600 min-h-screen">
@@ -91,15 +126,7 @@ function newsFeed() {
     )
     template = template.replace('{{__next_page__}}', store.currentPage + 1)
 
-    container.innerHTML = template
-}
-
-function makeFeeds(feeds) {
-    for (let i = 0; i < feeds.length; i++) {
-        feeds[i].read = false
-    }
-
-    return feeds
+    updateView(template)
 }
 
 function newsDetail() {
@@ -163,9 +190,8 @@ function newsDetail() {
 
         return commentString.join('')
     }
-    container.innerHTML = template.replace(
-        '{{__comments__}}',
-        makeComment(newsContent.comments)
+    updateView(
+        template.replace('{{__comments__}}', makeComment(newsContent.comments))
     )
 }
 
