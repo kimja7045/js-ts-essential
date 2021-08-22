@@ -1,6 +1,7 @@
 // const container: HTMLElement | null = document.getElementById('root')
 // const ajax: XMLHttpRequest = new XMLHttpRequest()
 import { NewsFeed, NewsDetail } from '../types'
+import { NEWS_URL, CONTENT_URL } from '../config'
 
 function applyApiMixins(targetClass: any, baseClasses: any[]): void {
     baseClasses.forEach((baseClass) => {
