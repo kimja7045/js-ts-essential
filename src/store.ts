@@ -47,7 +47,8 @@ export default class Store implements NewsStore {
     }
 
     makeRead(id: number): void {
-        this.getFeed(id).read = true
+        let feed = this.getFeed(id)
+        feed.read = true
         // let hasFeed: Boolean = false
         // for (let index = 0; index < this.feeds.length; index++) {
         //     let data = this.feeds[index]

@@ -7,7 +7,7 @@ export interface NewsStore {
     makeRead: (id: number) => void
     hasFeeds: boolean
     currentPage: number
-    numberOfFeeds: number
+    numberOfFeed: number
     nextPage: number
     prevPage: number
 }
