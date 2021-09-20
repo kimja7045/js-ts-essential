@@ -26,24 +26,28 @@ export default class Api {
         this.url = url
     }
 
-    getRequestWithXHR<AjaxResponse>(cb: (data: AjaxResponse) => void): void {
-        this.xhr.open('GET', this.url)
-        this.xhr.addEventListener('load', () => {
-            cb(JSON.parse(this.xhr.response) as AjaxResponse)
-        })
-        this.xhr.send()
+    async request<AjaxResponse>(): Promise<AjaxResponse> {
+        const response = await fetch(this.url)
+        return (await response.json()) as AjaxResponse
     }
+    // getRequestWithXHR<AjaxResponse>(cb: (data: AjaxResponse) => void): void {
+    //     this.xhr.open('GET', this.url)
+    //     this.xhr.addEventListener('load', () => {
+    //         cb(JSON.parse(this.xhr.response) as AjaxResponse)
+    //     })
+    //     this.xhr.send()
+    // }
 
-    getRequestWithPromise<AjaxResponse>(
-        cb: (data: AjaxResponse) => void
-    ): void {
-        fetch(this.url)
-            .then((response) => response.json())
-            .then(cb)
-            .catch(() => {
-                console.error('데이터를 불러오지 못했습니다.')
-            })
-    }
+    // getRequestWithPromise<AjaxResponse>(
+    //     cb: (data: AjaxResponse) => void
+    // ): void {
+    // fetch(this.url)
+    //     .then((response) => response.json())
+    //     .then(cb)
+    //     .catch(() => {
+    //         console.error('데이터를 불러오지 못했습니다.')
+    //     })
+    // }
 }
 
 export class NewsFeedApi extends Api {
@@ -51,14 +55,18 @@ export class NewsFeedApi extends Api {
         super(url)
     }
 
-    getDataWithXHR(cb: (data: NewsFeed[]) => void): void {
-        return this.getRequestWithXHR<NewsFeed[]>(cb)
+    async getData(): Promise<NewsFeed[]> {
+        return this.request<NewsFeed[]>()
         // return this.getRequest<NewsFeed[]>(NEWS_URL)
     }
-    getDataWithPromise(cb: (data: NewsFeed[]) => void): void {
-        return this.getRequestWithPromise<NewsFeed[]>(cb)
-        // return this.getRequest<NewsFeed[]>(NEWS_URL)
-    }
+    // getDataWithXHR(cb: (data: NewsFeed[]) => void): void {
+    //     return this.getRequestWithXHR<NewsFeed[]>(cb)
+    //     // return this.getRequest<NewsFeed[]>(NEWS_URL)
+    // }
+    // getDataWithPromise(cb: (data: NewsFeed[]) => void): void {
+    //     return this.getRequestWithPromise<NewsFeed[]>(cb)
+    //     // return this.getRequest<NewsFeed[]>(NEWS_URL)
+    // }
 }
 
 export class NewsDetailApi extends Api {
@@ -66,14 +74,14 @@ export class NewsDetailApi extends Api {
         super(url)
     }
 
-    getDataWithXHR(cb: (data: NewsDetail) => void): void {
-        return this.getRequestWithXHR<NewsDetail>(cb)
-        // return this.getRequest<NewsDetail>(CONTENT_URL.replace('@id', id))
-    }
-    getDataWithPromise(cb: (data: NewsDetail) => void): void {
-        return this.getRequestWithPromise<NewsDetail>(cb)
+    async getData(): Promise<NewsDetail> {
+        return this.request<NewsDetail>()
         // return this.getRequest<NewsFeed[]>(NEWS_URL)
     }
+    // getDataWithPromise(cb: (data: NewsDetail) => void): void {
+    //     return this.getRequestWithPromise<NewsDetail>(cb)
+    //     // return this.getRequest<NewsFeed[]>(NEWS_URL)
+    // }
 }
 
 export interface NewsFeedApi extends Api {}
