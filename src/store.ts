@@ -20,7 +20,7 @@ export default class Store implements NewsStore {
         return this._currentPage + 1
     }
     get prevPage(): number {
-        return this._currentPage > 1 ? this._currentPage : 1
+        return this._currentPage > 1 ? this._currentPage - 1 : 1
     }
 
     get numberOfFeed(): number {
@@ -40,15 +40,18 @@ export default class Store implements NewsStore {
     }
 
     setFeeds(feeds: NewsFeed[]): void {
-        feeds.map((feed) => ({
+        this.feeds = feeds.map((feed) => ({
             ...feed,
             read: false,
         }))
     }
 
     makeRead(id: number): void {
-        let feed = this.getFeed(id)
-        feed.read = true
+        this.feeds.forEach((feed, i) => {
+            if (feed.id === id) {
+                this.feeds[i].read = true
+            }
+        })
         // let hasFeed: Boolean = false
         // for (let index = 0; index < this.feeds.length; index++) {
         //     let data = this.feeds[index]

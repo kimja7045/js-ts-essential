@@ -38,7 +38,7 @@ export default class NewsFeedView extends View {
         this.store = store
         this.api = new NewsFeedApi()
 
-        if (this.store.hasFeeds) {
+        if (!this.store.hasFeeds) {
             this.store.setFeeds(this.api.getData())
         }
     }
